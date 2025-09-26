@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3d_controller/flutter_3d_controller.dart';
 
-import 'core/car_model.dart' ;
+import 'core/car_model.dart';
 import 'core/enums.dart';
 
 class CarShowcaseScreen extends StatefulWidget {
@@ -94,70 +94,56 @@ class _Car3DViewerState extends State<Car3DViewer> {
   CameraAngle _currentAngle = CameraAngle.front;
 
   // Predefined camera positions for different angles
-  final Map<CameraAngle, Map<String, double>> _cameraPositions = {
-    CameraAngle.front: {
-      'cameraX': 0.0,
-      'cameraY': 0.0,
-      'cameraZ': 5.0,
-      'targetX': 0.0,
-      'targetY': 0.0,
-      'targetZ': 0.0,
-    },
-    CameraAngle.side: {
-      'cameraX': 5.0,
-      'cameraY': 1.0,
-      'cameraZ': 0.0,
-      'targetX': 0.0,
-      'targetY': 0.0,
-      'targetZ': 0.0,
-    },
-    CameraAngle.rear: {
-      'cameraX': 0.0,
-      'cameraY': 0.0,
-      'cameraZ': -5.0,
-      'targetX': 0.0,
-      'targetY': 0.0,
-      'targetZ': 0.0,
-    },
-    CameraAngle.topDown: {
-      'cameraX': 0.0,
-      'cameraY': 8.0,
-      'cameraZ': 0.0,
-      'targetX': 0.0,
-      'targetY': 0.0,
-      'targetZ': 0.0,
-    },
-    CameraAngle.detail: {
-      'cameraX': 2.0,
-      'cameraY': 1.5,
-      'cameraZ': 3.0,
-      'targetX': 0.0,
-      'targetY': 0.5,
-      'targetZ': 0.0,
-    },
+  final Map<CameraAngle, List<double>> _cameraPositions = {
+    CameraAngle.front: [0, 0, 4],
+    CameraAngle.side: [90, 0, 4],
+    CameraAngle.rear: [30, 30, 6],
+    CameraAngle.topDown: [0, 80, 5],
+    CameraAngle.detail: [30, 30, 6],
   };
+
+  final Map<String, List<double>> presets = {
+    'front': [0, 0, 4],
+    'side': [90, 0, 4],
+    'top': [0, 80, 5],
+    'iso': [30, 30, 6],
+  };
+  CameraAngle currentPreset = CameraAngle.front;
+
+  /// Switch camera to a preset for the currently visible model
+  void _applyPreset(CameraAngle preset) {
+    // final ctrl = controllers[currentPage];
+    // if (ctrl == null) return;
+    final p = _cameraPositions[preset]!;
+    // setCameraOrbit(azimuth, elevation, radius)
+    controller.setCameraOrbit(p[0], p[1], p[2]);
+    setState(() => currentPreset = preset);
+  }
 
   @override
   void initState() {
     super.initState();
     // Auto-rotate the model
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startAutoRotation();
+      // _ensureControllerForPage(0);
+
+      // _startAutoRotation();
     });
   }
 
-  void _startAutoRotation() {
-    // controller.setRotationY(360); // Rotate 360 degrees on Y-axis
-    // controller.setAnimationDuration(10000); // 10 seconds for full rotation
-    // controller.setAutoRotate(true);
-  }
+  // void _startAutoRotation() {
+  //   // controller.setRotationY(360); // Rotate 360 degrees on Y-axis
+  //   // controller.setAnimationDuration(10000); // 10 seconds for full rotation
+  //   // controller.setAutoRotate(true);
+  // }
 
   void _changeCameraAngle(CameraAngle angle) {
-    setState(() {
-      _currentAngle = angle;
-    });
-
-    final position = _cameraPositions[angle]!;
+    _applyPreset(angle);
+    // setState(() {
+    //   _currentAngle = angle;
+    // });
+    //
+    // final position = _cameraPositions[angle]!;
 
     // Smoothly animate to new camera position
     // controller.setCameraPosition(
@@ -166,11 +152,11 @@ class _Car3DViewerState extends State<Car3DViewer> {
     //   position['cameraZ']!,
     // );
 
-    controller.setCameraTarget(
-      position['targetX']!,
-      position['targetY']!,
-      position['targetZ']!,
-    );
+    // controller.setCameraTarget(
+    //   position['targetX']!,
+    //   position['targetY']!,
+    //   position['targetZ']!,
+    // );
   }
 
   @override
@@ -180,10 +166,7 @@ class _Car3DViewerState extends State<Car3DViewer> {
         gradient: RadialGradient(
           center: Alignment.center,
           radius: 1.0,
-          colors: [
-            widget.carModel.primaryColor.withOpacity(0.3),
-            Colors.black,
-          ],
+          colors: [widget.carModel.primaryColor.withOpacity(0.3), Colors.black],
         ),
       ),
       child: Stack(
@@ -272,18 +255,11 @@ class _Car3DViewerState extends State<Car3DViewer> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.touch_app,
-                    color: Colors.white70,
-                    size: 16,
-                  ),
+                  Icon(Icons.touch_app, color: Colors.white70, size: 16),
                   SizedBox(width: 8),
                   Text(
                     "Drag to rotate • Pinch to zoom",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
                   ),
                 ],
               ),
@@ -323,23 +299,11 @@ class CameraControlPanel extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildCameraButton(
-            CameraAngle.front,
-            Icons.visibility,
-            "Front",
-          ),
+          _buildCameraButton(CameraAngle.front, Icons.visibility, "Front"),
           SizedBox(height: 4),
-          _buildCameraButton(
-            CameraAngle.side,
-            Icons.arrow_forward,
-            "Side",
-          ),
+          _buildCameraButton(CameraAngle.side, Icons.arrow_forward, "Side"),
           SizedBox(height: 4),
-          _buildCameraButton(
-            CameraAngle.rear,
-            Icons.arrow_back,
-            "Rear",
-          ),
+          _buildCameraButton(CameraAngle.rear, Icons.arrow_back, "Rear"),
           SizedBox(height: 4),
           _buildCameraButton(
             CameraAngle.topDown,
@@ -347,11 +311,7 @@ class CameraControlPanel extends StatelessWidget {
             "Top",
           ),
           SizedBox(height: 4),
-          _buildCameraButton(
-            CameraAngle.detail,
-            Icons.zoom_in,
-            "Detail",
-          ),
+          _buildCameraButton(CameraAngle.detail, Icons.zoom_in, "Detail"),
         ],
       ),
     );
@@ -436,11 +396,7 @@ class CarInfoPanel extends StatelessWidget {
           SizedBox(height: 16),
           Text(
             "Experience the pinnacle of automotive engineering and design with immersive 3D interaction.",
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 16,
-              height: 1.4,
-            ),
+            style: TextStyle(color: Colors.white70, fontSize: 16, height: 1.4),
           ),
           SizedBox(height: 24),
 
@@ -460,7 +416,7 @@ class CarInfoPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               totalCars,
-                  (index) => GestureDetector(
+              (index) => GestureDetector(
                 onTap: () => onPageChanged(index),
                 child: AnimatedContainer(
                   duration: Duration(milliseconds: 300),
