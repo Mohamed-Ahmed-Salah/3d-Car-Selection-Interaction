@@ -6,6 +6,7 @@ import 'media.dart';
 class CarModel {
   final String name;
   final String subtitle;
+  final String description;
   final String modelPath;
   final String topSpeed;
   final String performance;
@@ -16,6 +17,7 @@ class CarModel {
   CarModel({
     required this.name,
     required this.subtitle,
+    required this.description,
     required this.modelPath,
     required this.topSpeed,
     required this.performance,
@@ -29,6 +31,8 @@ final List<CarModel> carModels = [
   CarModel(
     name: "BUGATTI CHIRON",
     subtitle: "THE PUREST",
+    description:
+        "The Chiron Sport is Bugatti's breathtaking new interpretation of the ultimate super sports car, unveiled at Geneva International Motor",
     modelPath: Media.bugatti1,
     topSpeed: "261 mph",
     performance: "1,479 hp",
@@ -39,6 +43,8 @@ final List<CarModel> carModels = [
   CarModel(
     name: "BUGATTI TOURBILLON",
     subtitle: "THE ULTIMATE",
+    description:
+        "Tourbillon redefines the ultimate driving experience with futuristic engineering. A masterpiece blending elegance, speed, and innovation.",
     modelPath: Media.bugatti2,
     topSpeed: "236 mph",
     performance: "1,775 hp",
@@ -49,6 +55,9 @@ final List<CarModel> carModels = [
   CarModel(
     name: "PORSCHE 911",
     subtitle: "THE LEGEND",
+    description:
+        "The 911 is an icon of sports car heritage. Precision, balance, and everyday usability make it a living legend on and off the track.",
+
     modelPath: Media.porche,
     topSpeed: "193 mph",
     performance: "640 hp",
@@ -59,6 +68,9 @@ final List<CarModel> carModels = [
   CarModel(
     name: "FERRARI 488 PISTA",
     subtitle: "THE BEAST",
+    description:
+        "The 488 Pista is raw Ferrari racing DNA on the road. Lightweight, aggressive, and exhilarating, it delivers pure adrenaline.",
+
     modelPath: Media.ferrari,
     topSpeed: "211 mph",
     performance: "710 hp",
