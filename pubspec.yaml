@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_3d_controller: ^2.3.0
   google_fonts: ^6.3.2
+  linked_pageview: ^1.1.5
 #  flutter_gl: ^0.0.21
 #  three_dart: ^0.0.16
 #  three_dart_jsm: ^0.0.10

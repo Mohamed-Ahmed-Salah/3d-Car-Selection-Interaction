@@ -216,6 +216,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  linked_pageview:
+    dependency: "direct main"
+    description:
+      name: linked_pageview
+      sha256: "795972b7d7c9b8cdf133c0328956ce32f068ebfdff7bb2012068df8fcd8a1664"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.5"
   lints:
     dependency: transitive
     description:
