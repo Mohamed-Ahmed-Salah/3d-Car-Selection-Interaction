@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:threed_cars_challenge/claude_car.dart';
+import 'package:threed_cars_challenge/main_animation.dart';
 
 void main() {
   runApp(const MyApp());
